@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+    <title>VUI Component Usage Report</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+    </script>
+    <script>
+        function loadData() {
+            $("#loader").show();
+            $.get("/api/vuiusage", function (data) {
+                data = data.map(function (d) {
+                    var pluginString = "";
+                    for (var key in d.plugin) {
+                        pluginString += d.plugin[key].name + ": " + d.plugin[key].count + "</br>";
+                    }
+                    d.pluginDataToString = pluginString
+                    return d;
+                })
+                $('#table').bootstrapTable({
+                    data: data
+                });
+                $("#loader").hide();
+
+            });
+        }
+        loadData();
+    </script>
+
+<style>
+        .main{
+            margin:10px;
+        }
+        #refresh{
+            margin:10px;
+        }
+         
+    </style>
+<div class="main">
+    <div>
+        <button id="refresh" onClick="loadData()">Refresh</button>
+<label id="loader">loading...</label>
+</div>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th data-field="name">Name</th>
+            <th data-field="usage">Usage Count</th>
+            <th data-field="pluginDataToString">Plugin</th>
+            <!--<th data-field="usageFiles">Usage Files</th>-->
+        </tr>
+    </thead>
+</table>
+
+</div>
+</body>
+
+</html>
