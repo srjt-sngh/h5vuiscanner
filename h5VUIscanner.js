@@ -2,8 +2,11 @@ var h5VUIscanner = function () {
     var fs = require('fs');
     var _ = require("lodash");
     var readline = require('readline');
-    var basePathList = ['/Users/surjits/workspace/h5_client/vsphere-client-modules/h5-plugin/ui',
-        '/Users/surjits/workspace/h5_client/vim-clients/platform/js-ui-lib'];
+    var basePathList = [
+        '/Users/surjits/workspace/h5_client/vsphere-client-modules/h5-plugin/ui',
+        '/Users/surjits/workspace/h5_client/vim-clients/platform/js-ui-lib',
+        '/Users/surjits/workspace/h5_client/vim-clients/applications/h5/appliance-ui'
+        ];
 
     var excludedDirs = ['node_modules', 'target', 'locales', 'sprite-icons', 'META-INT', 'WEB-INF', 'css', 'img', 'spec'];
     var vuiDirectives = [
@@ -38,7 +41,7 @@ var h5VUIscanner = function () {
             plugin: {}
         },
         {
-            name: 'vui-porgress-bar',
+            name: 'vui-progress-bar',
             usage: 0,
             usageFiles: [],
             plugin: {}
@@ -108,7 +111,7 @@ var h5VUIscanner = function () {
         return null;
     }
     function getPluginFromFileName(fileName){
-        var instancesFound = (fileName.match(new RegExp("[a-z]*-ui","g")) || []);
+        var instancesFound = (fileName.match(new RegExp("[a-z -]*-ui[- a-z]*","g")) || []);
         if(instancesFound.length > 0){
             return instancesFound[0];
         }
